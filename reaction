@@ -1,0 +1,38 @@
+import time
+import random
+
+def reaction_time_test():
+    print("Reaction Time Test")
+    print("When prompted, press Enter as quickly as possible!")
+    scores = []
+    num_trials = 5
+    MIN_REACTION_TIME_MS = 50
+
+    trial = 1
+    while trial <= num_trials:
+        wait = random.randint(2, 5)
+        print(f"\nTrial {trial}: Get Ready...")
+        time.sleep(wait)
+        start = time.time()
+        input("NOW! Press Enter as fast as you can: ")
+        end = time.time()
+        reaction_ms = int((end - start) * 1000)
+
+        if reaction_ms < MIN_REACTION_TIME_MS:
+            print("Error: Reaction too fast! Did you press Enter too early? Try again.")
+            # Do not increment trial, repeat this trial
+            continue
+
+        print(f"Your reaction time: {reaction_ms} ms")
+        scores.append(reaction_ms)
+        trial += 1  # Increment only on a valid trial
+
+    avg = sum(scores) / len(scores)
+    fastest = min(scores)
+    slowest = max(scores)
+    print("\nResults:", scores)
+    print(f"Fastest reaction time: {fastest} ms")
+    print(f"Slowest reaction time: {slowest} ms")
+    print(f"Average reaction time: {avg:.2f} ms")
+
+reaction_time_test()
