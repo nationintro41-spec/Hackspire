@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cognitive and Skill Tests</title>
+<style>
+  /* Background animation */
+  @keyframes gradientBackground {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+  }
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #74ebd5, #ACB6E5, #FFE29F, #FF7E5F);
+    background-size: 400% 400%;
+    animation: gradientBackground 20s ease infinite;
+    color: #1c1c1e;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 1rem 4rem;
+  }
+  main {
+    background: rgba(255 255 255 / 0.9);
+    max-width: 720px;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgb(0 0 0 / 0.3);
+    padding: 2rem 3rem 3rem;
+    backdrop-filter: saturate(180%) blur(16px);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+  }
+  h1, h2 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.02em;
+  }
+  h1 {
+    font-size: 2.8rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-size: 1.8rem;
+  }
+  p {
+    color: #4b6179;
+    font-size: 1.05rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+  button {
+    font: 600 1rem "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0.6rem 1.3rem;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 10px;
+    background: #34495e;
+    color: #ecf0f1;
+    cursor: pointer;
+    box-shadow: 0 6px 10px rgb(52 73 94 / 0.45);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease,
+      transform 0.2s ease;
+    user-select: none;
+  }
+  button:hover:not(:disabled),
+  button:focus-visible {
+    background-color: #2c3e50;
+    box-shadow: 0 12px 20px rgb(44 62 80 / 0.7);
+    outline: none;
+    transform: translateY(-3px);
+  }
+  button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 15px rgb(44 62 80 / 0.6);
+  }
+  button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  section {
+    margin-bottom: 3rem;
+    border-bottom: 2px solid #dce3e8;
+    padding-bottom: 2rem;
+  }
+  .hidden {
+    display: none !important;
+  }
+  label {
+    font-weight: 700;
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+    color: #34495e;
+  }
+  input[type="text"],
+  textarea {
+    width: 100%;
+    max-width: 520px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    border: 2px solid #b0bec5;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+    resize: vertical;
+    box-sizing: border-box;
+    color: #34495e;
+  }
+  input[type="text"]:focus,
+  textarea:focus {
+    outline: none;
+    border-color: #34495e;
+  }
+  .inline-input {
+    width: auto;
+    max-width: 120px;
+  }
+
+  /* Reaction box with animation */
+  .reaction-box {
+    width: 200px;
+    height: 120px;
+    margin: 1rem auto;
+    border-radius: 20px;
+    background-color: #c0392b;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.6rem;
+    user-select: none;
+    box-shadow:
+      0 0 15px 4px rgba(192, 57, 43, 0.6),
+      inset 0 -5px 15px rgb(192 57 43 / 0.8);
+    transition: background-color 0.3s ease, box-shadow 0.4s ease;
+  }
+  .reaction-box.ready {
+    background-color: #27ae60;
+    box-shadow:
+      0 0 20px 6px rgba(39, 174, 96, 0.7),
+      inset 0 -5px 15px rgb(39 174 96 / 0.9);
+  }
+  .reaction-box:focus-visible {
+    outline: 3px solid #2980b9;
+  }
+
+  .results-list {
+    margin-top: 1rem;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1.05rem;
+    white-space: pre-wrap;
+    color: #34495e;
+    letter-spacing: 0.02em;
+  }
+  .summary-list {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    font-family: monospace;
+    background: #f0f8ff;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #d0dde6;
+    overflow-x: auto;
+  }
+  .grade-A {
+    color: #27ae60;
+    font-weight: 800;
+  }
+  .grade-B {
+    color: #d35400;
+    font-weight: 800;
+  }
+  .grade-C {
+    color: #c0392b;
+    font-weight: 800;
+  }
+  textarea {
+    line-height: 1.5;
+    min-height: 3rem;
+    font-family: "Courier New", Courier, monospace;
+  }
+  .final-summary {
+    background: #d9f0ff;
+    border: 3px solid #2e86c1;
+    padding: 1.5rem 2rem;
+    border-radius: 14px;
+    font-size: 1.1rem;
+  }
+  .final-summary b {
+    font-weight: 900;
+  }
+  .feedback {
+    margin-top: 0.5rem;
+    font-style: italic;
+    color: #34495e;
+  }
+  label > span {
+    font-weight: normal;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-left: 0.3rem;
+  }
+  .center {
+    text-align: center;
+  }
+
+  /* Emotion container */
+  #emotion-container {
+    width: 100%;
+    height: 120px;
+    position: relative;
+    pointer-events: none;
+    margin-top: 1rem;
+    overflow: visible;
+  }
+
+  /* Happy character - simple bouncing smiley */
+  .happy-character {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 5rem;
+    animation: bounce 1.2s infinite alternate ease-in-out;
+    user-select: none;
+    filter: drop-shadow(0 0 4px #ffdd55);
+  }
+
+  @keyframes bounce {
+    0% { transform: translateX(-50%) translateY(0); }
+    100% { transform: translateX(-50%) translateY(-20px); }
+  }
+
+  /* Sad character - simple teardrop animation */
+  .sad-character {
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    transform: translateX(50%);
+    font-size: 5rem;
+    animation: teardrop 1.4s infinite ease-in-out;
+    user-select: none;
+    filter: drop-shadow(0 0 4px #3399ff);
+  }
+
+  @keyframes teardrop {
+    0%, 100% { transform: translateX(50%) translateY(0); opacity: 1; }
+    50% { transform: translateX(50%) translateY(15px); opacity: 0.7; }
+  }
+</style>
+</head>
+<body>
+<main role="main" aria-label="Cognitive and skill tests application">
+  <h1>Cognitive and Skill Tests</h1>
+
+  <section id="reaction-section" aria-labelledby="reaction-title" tabindex="-1">
+    <h2 id="reaction-title">Reaction Time Test</h2>
+    <p>Click the box when it turns <strong>green</strong>. Try to react as fast as possible. Five trials.</p>
+    <div id="reaction-box" class="reaction-box" tabindex="0" role="button" aria-live="polite" aria-atomic="true" aria-label="Reaction test box, click when color changes to green. Wait for green...">Wait for green...</div>
+    <button id="reaction-start-btn" aria-describedby="reaction-instructions">Start Test</button>
+    <div id="reaction-results" class="results-list" aria-live="polite" aria-atomic="true" aria-label="Reaction time results"></div>
+  </section>
+
+  <section id="sequence-section" aria-labelledby="sequence-title" tabindex="-1" class="hidden">
+    <h2 id="sequence-title">Sequence Memory Game</h2>
+    <p>Memorize the digit sequence shown, then type it back separated by spaces.</p>
+    <button id="sequence-start-btn" aria-describedby="sequence-instructions">Start Game</button>
+    <div id="sequence-display" class="center" aria-live="assertive" style="font-size:1.6rem; margin-top:1rem; font-weight:bold;"></div>
+    <label for="sequence-input" id="sequence-prompt-label" class="hidden">Enter the sequence digits separated by spaces</label>
+    <input type="text" id="sequence-input" class="hidden" aria-labelledby="sequence-prompt-label" autocomplete="off" inputmode="numeric" pattern="[0-9 ]*" aria-required="true" />
+    <button id="sequence-submit-btn" class="hidden">Submit</button>
+    <div id="sequence-feedback" aria-live="polite" style="margin-top: 1.2rem; font-weight: 600; color: #34495e;"></div>
+  </section>
+
+  <section id="typing-section" aria-labelledby="typing-title" tabindex="-1" class="hidden">
+    <h2 id="typing-title">Typing Speed and Accuracy Test</h2>
+    <p>Type the displayed sentence exactly. Four rounds.</p>
+    <button id="typing-start-btn" aria-describedby="typing-instructions">Start Typing Test</button>
+    <div id="typing-sentence" style="margin-top: 1rem; font-size:1.3rem; background:#e6f2ff; padding: 1rem 1.2rem; border-radius: 10px; font-family: monospace; font-weight: 600; color: #34495e;"></div>
+    <label for="typing-input" id="typing-prompt-label" class="hidden">Type the sentence exactly</label>
+    <textarea id="typing-input" class="hidden" rows="3" aria-labelledby="typing-prompt-label" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
+    <button id="typing-submit-btn" class="hidden">Submit</button>
+    <div id="typing-feedback" aria-live="polite" style="margin-top: 1.2rem; font-weight: 600; color: #34495e;"></div>
+  </section>
+
+  <section id="arithmetic-section" aria-labelledby="arithmetic-title" tabindex="-1" class="hidden">
+    <h2 id="arithmetic-title">Arithmetic IQ Test</h2>
+    <p>Answer the following arithmetic questions. Ten questions total.</p>
+    <button id="arithmetic-start-btn">Start IQ Test</button>
+    <div id="arithmetic-question" style="margin-top: 1rem; font-size:1.4rem; font-weight: 700; color: #34495e;"></div>
+    <label for="arithmetic-input" id="arithmetic-prompt-label" class="hidden">Enter answer</label>
+    <input type="text" id="arithmetic-input" class="hidden inline-input" aria-labelledby="arithmetic-prompt-label" autocomplete="off" aria-required="true" />
+    <button id="arithmetic-submit-btn" class="hidden">Submit</button>
+    <div id="arithmetic-feedback" aria-live="polite" style="margin-top: 1.2rem; font-weight: 600; color: #34495e;"></div>
+  </section>
+
+  <section id="final-summary-section" class="hidden" aria-live="polite" aria-atomic="true" tabindex="-1">
+    <h2>Final Results Summary</h2>
+    <div id="final-summary-content" class="final-summary"></div>
+    <!-- Emotion container for animated characters -->
+    <div id="emotion-container" aria-live="polite" aria-atomic="true"></div>
+    <button id="restart-btn" style="margin-top: 1.5rem;">Restart All Tests</button>
+  </section>
+
+</main>
+
+<script>
+(() => {
+  // Utility functions:
+  function gradeReactionTime(ms) {
+    if (ms < 250) return "A";
+    else if (ms <= 400) return "B";
+    else return "C";
+  }
+  function gradeMemoryRecall(accuracy) {
+    if (accuracy > 80) return "A";
+    else if (accuracy >= 50) return "B";
+    else return "C";
+  }
+  function gradeMath(score, avgTimePerQ, totalQs) {
+    const accuracyPercent = (score / totalQs) * 100;
+    const timeScore = Math.max(0, 100 - avgTimePerQ * 5);
+    const combined = (accuracyPercent + timeScore) / 2;
+    if (combined > 80) return "A";
+    else if (combined >= 50) return "B";
+    else return "C";
+  }
+  function gradeTyping(acc, wpm) {
+    const wpmScore = Math.min(wpm, 80) / 80 * 100;
+    const combined = (acc + wpmScore) / 2;
+    if (combined > 80) return "A";
+    else if (combined >= 50) return "B";
+    else return "C";
+  }
+  function formatNumber(n, digits=2) {
+    return n.toFixed(digits);
+  }
+
+  // Reaction Time Test
+  const reactionBox = document.getElementById('reaction-box');
+  const reactionStartBtn = document.getElementById('reaction-start-btn');
+  const reactionResults = document.getElementById('reaction-results');
+
+  let reactionPhase = 'idle'; // idle, waiting, ready
+  let reactionTimeoutId = null;
+  let reactionStartTime = 0;
+  let reactionTrials = 0;
+  let reactionScores = [];
+  const MIN_REACTION_TIME_MS = 50;
+  const MAX_TRIALS = 5;
+
+  function resetReactionTest() {
+    reactionTrials = 0;
+    reactionScores = [];
+    reactionPhase = 'idle';
+    reactionBox.textContent = "Wait for green...";
+    reactionBox.classList.remove('ready');
+    reactionBox.style.backgroundColor = '#c0392b';
+    reactionResults.textContent = '';
+    reactionStartBtn.disabled = false;
+    reactionBox.setAttribute('aria-label', 'Reaction test box, click when color changes to green. Wait for green...');
+  }
+
+  reactionStartBtn.addEventListener('click', () => {
+    reactionStartBtn.disabled = true;
+    reactionResults.textContent = '';
+    reactionTrials = 0;
+    reactionScores = [];
+    nextReactionTrial();
+  });
+
+  function nextReactionTrial() {
+    reactionTrials++;
+    reactionPhase = 'waiting';
+    reactionBox.style.backgroundColor = '#c0392b';
+    reactionBox.textContent = `Trial ${reactionTrials}: Wait for green...`;
+    reactionBox.classList.remove('ready');
+    reactionBox.setAttribute('aria-label', `Trial ${reactionTrials}, wait for green`);
+    // Random wait 2-5 sec (2000 - 5000 ms)
+    const waitMs = 2000 + Math.floor(Math.random() * 3000);
+    reactionTimeoutId = setTimeout(() => {
+      reactionPhase = 'ready';
+      reactionBox.style.backgroundColor = '#27ae60';
+      reactionBox.textContent = "CLICK NOW!";
+      reactionBox.classList.add('ready');
+      reactionBox.setAttribute('aria-label', 'Reaction test box is green, click now!');
+      reactionStartTime = performance.now();
+    }, waitMs);
+  }
+
+  reactionBox.addEventListener('click', () => {
+    if (reactionPhase === 'waiting') {
+      clearTimeout(reactionTimeoutId);
+      reactionBox.textContent = "Too soon! Wait for green.";
+      reactionBox.setAttribute('aria-label', 'Clicked too soon! Wait for green.');
+      reactionResults.textContent += `Trial ${reactionTrials}: Error - pressed too early\n`;
+      reactionPhase = 'idle';
+      // retry same trial without increment
+      setTimeout(nextReactionTrial, 1500);
+    } else if (reactionPhase === 'ready') {
+      const reactionEndTime = performance.now();
+      let reactionTimeMs = Math.round(reactionEndTime - reactionStartTime);
+      if (reactionTimeMs < MIN_REACTION_TIME_MS) {
+        reactionResults.textContent += `Trial ${reactionTrials}: Error - reaction too fast (${reactionTimeMs} ms)\n`;
+        reactionBox.textContent = "Error: Reaction too fast! Try again.";
+        reactionBox.setAttribute('aria-label', 'Reaction too fast error. Try again.');
+        reactionPhase = 'idle';
+        setTimeout(nextReactionTrial, 1500);
+        return;
+      }
+      reactionScores.push(reactionTimeMs);
+      reactionResults.textContent += `Trial ${reactionTrials}: ${reactionTimeMs} ms\n`;
+      reactionBox.textContent = `Your reaction time: ${reactionTimeMs} ms`;
+      reactionBox.setAttribute('aria-label', `Trial ${reactionTrials} reaction time ${reactionTimeMs} milliseconds`);
+      reactionPhase = 'idle';
+
+      if (reactionTrials < MAX_TRIALS) {
+        setTimeout(nextReactionTrial, 1800);
+      } else {
+        // Done
+        reactionBox.textContent = "Test complete.";
+        reactionStartBtn.disabled = false;
+        showNextSection('sequence-section');
+        // Store results for final summary
+        results.reaction_scores = reactionScores;
+        results.reaction_avg = reactionScores.reduce((a,b) => a+b,0)/reactionScores.length;
+        results.reaction_fastest = Math.min(...reactionScores);
+        results.reaction_slowest = Math.max(...reactionScores);
+      }
+    }
+  });
+
+  // Sequence Memory Game
+  const sequenceStartBtn = document.getElementById('sequence-start-btn');
+  const sequenceDisplay = document.getElementById('sequence-display');
+  const sequenceInput = document.getElementById('sequence-input');
+  const sequenceSubmitBtn = document.getElementById('sequence-submit-btn');
+  const sequenceFeedback = document.getElementById('sequence-feedback');
+
+  let seqRound = 0;
+  const seqRoundsTotal = 4;
+  const seqStartLength = 6;
+  const seqStartDisplayTime = 3000;
+  let seqAccuracies = [];
+  let seqTimes = [];
+
+  function generateSequence(length) {
+    const seq = [];
+    for (let i=0; i<length; i++) {
+      seq.push(Math.floor(Math.random()*10));
+    }
+    return seq;
+  }
+  function calculateAccuracy(expected, response) {
+    if (response.length !== expected.length) return 0;
+    let correct = 0;
+    for (let i=0; i<expected.length; i++) {
+      if (expected[i] === response[i]) correct++;
+    }
+    return (correct / expected.length)*100;
+  }
+  async function playSequenceRound() {
+    seqRound++;
+    const length = seqStartLength + (seqRound -1);
+    const displayTime = seqStartDisplayTime + (seqRound -1)*1000;
+    sequenceDisplay.textContent = "Memorize this sequence:";
+    const sequence = generateSequence(length);
+    await new Promise(r => setTimeout(r, 700));
+    sequenceDisplay.textContent = sequence.join(' ');
+    await new Promise(r => setTimeout(r, displayTime));
+    sequenceDisplay.textContent = '';
+    sequenceInput.value = '';
+    sequenceInput.classList.remove('hidden');
+    sequenceInput.focus();
+    sequenceSubmitBtn.classList.remove('hidden');
+    sequenceFeedback.textContent = '';
+    const startTime = performance.now();
+
+    return new Promise((resolve) => {
+      sequenceSubmitBtn.onclick = () => {
+        let endTime = performance.now();
+        let elapsed = (endTime - startTime) / 1000.0;
+        let responseStr = sequenceInput.value.trim();
+        let response = responseStr.split(/\s+/).map(x => parseInt(x,10));
+        if (response.some(isNaN) || response.length !== length) {
+          sequenceFeedback.textContent = `Error: Enter exactly ${length} digits separated by spaces.`;
+          sequenceInput.focus();
+          return;
+        }
+        let accuracy = calculateAccuracy(sequence, response);
+        sequenceFeedback.textContent =
+          `Correct sequence: ${sequence.join(' ')}\n` +
+          `Your input:       ${response.join(' ')}\n` +
+          `Accuracy: ${accuracy.toFixed(2)}%\n` +
+          `Time taken: ${elapsed.toFixed(2)} seconds`;
+        sequenceInput.classList.add('hidden');
+        sequenceSubmitBtn.classList.add('hidden');
+        resolve({accuracy, elapsed});
+      };
+    });
+  }
+  sequenceStartBtn.onclick = async () => {
+    sequenceStartBtn.disabled = true;
+    seqRound = 0;
+    seqAccuracies = [];
+    seqTimes = [];
+    for(let i=0; i < seqRoundsTotal; i++) {
+      let result = await playSequenceRound();
+      seqAccuracies.push(result.accuracy);
+      seqTimes.push(result.elapsed);
+    }
+    let avgAcc = seqAccuracies.reduce((a,b) => a+b,0)/seqAccuracies.length;
+    let avgTime = seqTimes.reduce((a,b) => a+b,0)/seqTimes.length;
+    sequenceFeedback.textContent += `\nGame Over! Average accuracy: ${avgAcc.toFixed(2)}%, Average time: ${avgTime.toFixed(2)} s`;
+    results.seq_accuracies = seqAccuracies;
+    results.seq_avg_accuracy = avgAcc;
+    results.seq_avg_time = avgTime;
+    sequenceStartBtn.disabled = false;
+    showNextSection('typing-section');
+  };
+
+  // Typing Speed and Accuracy Test
+  const typingSentences = [
+    "All animals are equal.",
+    "Four legs good, two legs bad.",
+    "Big Brother is watching you.",
+    "War is peace.",
+    "Ignorance is strength.",
+    "Freedom is slavery.",
+    "The truth is a weapon.",
+    "Power corrupts absolutely.",
+    "Rebellion is inevitable.",
+    "Newspeak limits freedom."
+  ];
+  const typingStartBtn = document.getElementById('typing-start-btn');
+  const typingSentence = document.getElementById('typing-sentence');
+  const typingInput = document.getElementById('typing-input');
+  const typingSubmitBtn = document.getElementById('typing-submit-btn');
+  const typingFeedback = document.getElementById('typing-feedback');
+
+  let typingRound = 0;
+  const typingRoundsTotal = 4;
+  let typingAccuracies = [];
+  let typingWPMs = [];
+  let typingStartTime = 0;
+
+  function calculateTypingAccuracy(original, typed) {
+    const length = original.length;
+    let correctChars = 0;
+    for(let i=0; i<length; i++) {
+      if (original[i] === typed[i]) correctChars++;
+    }
+    return (correctChars / length) * 100;
+  }
+  function calculateWPM(text, elapsedSeconds) {
+    const words = text.trim().split(/\s+/).length;
+    const minutes = elapsedSeconds / 60;
+    return minutes > 0 ? words / minutes : 0;
+  }
+  typingStartBtn.onclick = () => {
+    typingRound = 0;
+    typingAccuracies = [];
+    typingWPMs = [];
+    typingStartBtn.disabled = true;
+    typingFeedback.textContent = '';
+    typingInput.value = '';
+    typingInput.classList.remove('hidden');
+    typingSubmitBtn.classList.remove('hidden');
+    nextTypingRound();
+  };
+  function nextTypingRound() {
+    if(typingRound >= typingRoundsTotal) {
+      showTypingResults();
+      return;
+    }
+    typingRound++;
+    let sentence;
+    do {
+      sentence = typingSentences[Math.floor(Math.random() * typingSentences.length)];
+    } while(typingAccuracies.length > 0 && typingSentence.textContent === sentence);
+    typingSentence.textContent = sentence;
+    typingInput.value = '';
+    typingInput.focus();
+    typingStartTime = performance.now();
+  }
+  typingSubmitBtn.onclick = () => {
+    const elapsed = (performance.now() - typingStartTime)/1000;
+    const original = typingSentence.textContent;
+    const typed = typingInput.value;
+    const accuracy = calculateTypingAccuracy(original, typed);
+    const wpm = calculateWPM(typed, elapsed);
+    typingAccuracies.push(accuracy);
+    typingWPMs.push(wpm);
+    typingFeedback.textContent = `Round ${typingRound} results: Time - ${elapsed.toFixed(2)} s, Accuracy - ${accuracy.toFixed(2)}%, WPM - ${wpm.toFixed(2)}`;
+    if (typingRound < typingRoundsTotal) {
+      setTimeout(nextTypingRound, 1800);
+    } else {
+      typingInput.classList.add('hidden');
+      typingSubmitBtn.classList.add('hidden');
+      showTypingResults();
+    }
+  };
+  function showTypingResults() {
+    const avgAcc = typingAccuracies.reduce((a,b)=>a+b,0)/typingAccuracies.length;
+    const avgWPM = typingWPMs.reduce((a,b)=>a+b,0)/typingWPMs.length;
+    typingFeedback.textContent += `\nTest complete! Average accuracy: ${avgAcc.toFixed(2)}%, Average WPM: ${avgWPM.toFixed(2)}`;
+    results.typing_avg_accuracy = avgAcc;
+    results.typing_avg_wpm = avgWPM;
+    results.typing_accuracies = typingAccuracies;
+    results.typing_wpms = typingWPMs;
+    typingStartBtn.disabled = false;
+    showNextSection('arithmetic-section');
+  }
+
+  // Arithmetic IQ Test
+  const arithmeticStartBtn = document.getElementById('arithmetic-start-btn');
+  const arithmeticQuestionElem = document.getElementById('arithmetic-question');
+  const arithmeticInput = document.getElementById('arithmetic-input');
+  const arithmeticSubmitBtn = document.getElementById('arithmetic-submit-btn');
+  const arithmeticFeedback = document.getElementById('arithmetic-feedback');
+
+  const arithmeticQuestions = [
+    "12 + 15 + 7",
+    "50 - 12 - 8",
+    "4 * 6 * 3",
+    "144 / 12 / 3",
+    "8 + 14 + 9",
+    "70 - 20 - 15",
+    "5 * 7 * 2",
+    "96 / 4 / 2",
+    "10 + 25 + 5",
+    "60 - 18 - 12"
+  ];
+  const arithmeticCorrectAnswers = arithmeticQuestions.map(q => eval(q));
+
+  let arithmeticIndex = 0;
+  let arithmeticScore = 0;
+  let arithmeticStartTime = 0;
+  let arithmeticTimes = [];
+
+  arithmeticStartBtn.onclick = () => {
+    arithmeticStartBtn.disabled = true;
+    arithmeticIndex = 0;
+    arithmeticScore = 0;
+    arithmeticTimes = [];
+    arithmeticFeedback.textContent = '';
+    arithmeticInput.value = '';
+    arithmeticInput.classList.remove('hidden');
+    arithmeticSubmitBtn.classList.remove('hidden');
+    askArithmeticQuestion();
+  };
+  function askArithmeticQuestion() {
+    arithmeticQuestionElem.textContent = `Question ${arithmeticIndex + 1}: ${arithmeticQuestions[arithmeticIndex]} = ?`;
+    arithmeticInput.value = '';
+    arithmeticInput.focus();
+    arithmeticStartTime = performance.now();
+  }
+  arithmeticSubmitBtn.onclick = () => {
+    const elapsed = (performance.now() - arithmeticStartTime) / 1000;
+    const userAnswer = arithmeticInput.value.trim();
+    arithmeticTimes.push(elapsed);
+    let numericAnswer = Number(userAnswer);
+    if (!isNaN(numericAnswer) && Math.abs(numericAnswer - arithmeticCorrectAnswers[arithmeticIndex]) < 0.001) {
+      arithmeticScore++;
+      arithmeticFeedback.textContent = `Question ${arithmeticIndex + 1}: Correct! Time: ${elapsed.toFixed(2)} s`;
+    } else {
+      arithmeticFeedback.textContent = `Question ${arithmeticIndex + 1}: Incorrect! The correct answer was ${arithmeticCorrectAnswers[arithmeticIndex]}. Time: ${elapsed.toFixed(2)} s`;
+    }
+    arithmeticIndex++;
+    if (arithmeticIndex < arithmeticQuestions.length) {
+      setTimeout(() => {
+        arithmeticFeedback.textContent = '';
+        askArithmeticQuestion();
+      }, 2000);
+    } else {
+      arithmeticInput.classList.add('hidden');
+      arithmeticSubmitBtn.classList.add('hidden');
+      showArithmeticResults();
+    }
+  };
+  function showArithmeticResults() {
+    const totalTime = arithmeticTimes.reduce((a,b) => a+b, 0);
+    arithmeticFeedback.textContent += `\nTest complete! Score: ${arithmeticScore} / ${arithmeticQuestions.length}, Total time: ${totalTime.toFixed(2)} s`;
+    results.arithmetic_score = arithmeticScore;
+    results.arithmetic_total_time = totalTime;
+    results.arithmetic_times = arithmeticTimes;
+    showNextSection('final-summary-section');
+    showFinalResults();
+  }
+
+  // Create SVG graphical comparison chart
+  function createComparisonChart(results) {
+    const avgReaction = 265; // ms (lower is better)
+    const avgMemory = 80;    // % (higher is better)
+    const avgTyping = 40;    // WPM (higher is better)
+    const avgArithmetic = 5; // score out of 10 (higher is better)
+
+    const reactionScoreNorm = Math.max(0, 100 - (results.reaction_avg || 400) / 4);
+    const memoryScoreNorm = Math.min(100, (results.seq_avg_accuracy || 0));
+    const typingScoreNorm = Math.min(100, ((results.typing_avg_wpm || 0) / 80) * 100);
+    const arithmeticScoreNorm = Math.min(100, ((results.arithmetic_score || 0) / 10) * 100);
+
+    const data = [
+      {label: "Reaction Time", user: reactionScoreNorm, avg: 100 - (avgReaction / 4), betterIsHigher:true},
+      {label: "Memory Accuracy", user: memoryScoreNorm, avg: avgMemory, betterIsHigher:true},
+      {label: "Typing Speed", user: typingScoreNorm, avg: (avgTyping/80)*100, betterIsHigher:true},
+      {label: "Arithmetic IQ", user: arithmeticScoreNorm, avg: (avgArithmetic/10)*100, betterIsHigher:true},
+    ];
+
+    const width = 660;
+    const height = 250;
+    const padding = 50;
+    const barWidth = 40;
+    const gap = 60;
+
+    const maxScore = 100;
+
+    const svgns = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgns, "svg");
+    svg.setAttribute("width", width);
+    svg.setAttribute("height", height);
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", "Graphical comparison of your scores vs average person");
+
+    const title = document.createElementNS(svgns, "text");
+    title.setAttribute("x", width/2);
+    title.setAttribute("y", padding/2);
+    title.setAttribute("text-anchor", "middle");
+    title.setAttribute("font-size", "18");
+    title.setAttribute("fill", "#34495e");
+    title.textContent = "Your Performance vs Average";
+    svg.appendChild(title);
+
+    for(let i=0; i<=5; i++){
+      const yVal = i * 20;
+      const y = height - padding - (yVal / maxScore) * (height - 2*padding);
+      const label = document.createElementNS(svgns, "text");
+      label.setAttribute("x", padding - 10);
+      label.setAttribute("y", y + 5);
+      label.setAttribute("text-anchor", "end");
+      label.setAttribute("font-size", "12");
+      label.setAttribute("fill", "#666");
+      label.textContent = yVal;
+      svg.appendChild(label);
+
+      const line = document.createElementNS(svgns, "line");
+      line.setAttribute("x1", padding);
+      line.setAttribute("x2", width - padding/2);
+      line.setAttribute("y1", y);
+      line.setAttribute("y2", y);
+      line.setAttribute("stroke", "#ddd");
+      line.setAttribute("stroke-dasharray", "3 3");
+      svg.appendChild(line);
+    }
+
+    data.forEach((d, i)=>{
+      const xBase = padding + i * gap * 2 + 10;
+
+      const userBarHeight = (d.user / maxScore) * (height - 2 * padding);
+      const userBar = document.createElementNS(svgns, "rect");
+      userBar.setAttribute("x", xBase);
+      userBar.setAttribute("y", height - padding - userBarHeight);
+      userBar.setAttribute("width", barWidth);
+      userBar.setAttribute("height", userBarHeight);
+      userBar.setAttribute("fill", "#2980b9");
+      userBar.setAttribute("aria-label", `${d.label} your score: ${d.user.toFixed(1)} out of 100`);
+      svg.appendChild(userBar);
+
+      const avgBarHeight = (d.avg / maxScore) * (height - 2 * padding);
+      const avgBar = document.createElementNS(svgns, "rect");
+      avgBar.setAttribute("x", xBase + barWidth + 10);
+      avgBar.setAttribute("y", height - padding - avgBarHeight);
+      avgBar.setAttribute("width", barWidth);
+      avgBar.setAttribute("height", avgBarHeight);
+      avgBar.setAttribute("fill", "#7f8c8d");
+      avgBar.setAttribute("aria-label", `${d.label} average score: ${d.avg.toFixed(1)} out of 100`);
+      svg.appendChild(avgBar);
+
+      const label = document.createElementNS(svgns, "text");
+      label.setAttribute("x", xBase + barWidth);
+      label.setAttribute("y", height - padding + 20);
+      label.setAttribute("text-anchor", "middle");
+      label.setAttribute("font-size", "12");
+      label.setAttribute("fill", "#34495e");
+      label.textContent = d.label;
+      svg.appendChild(label);
+
+      const userLabel = document.createElementNS(svgns, "text");
+      userLabel.setAttribute("x", xBase + barWidth/2);
+      userLabel.setAttribute("y", height - padding - userBarHeight - 10);
+      userLabel.setAttribute("text-anchor", "middle");
+      userLabel.setAttribute("font-size", "10");
+      userLabel.setAttribute("fill", "#2980b9");
+      userLabel.textContent = "You";
+      svg.appendChild(userLabel);
+
+      const avgLabel = document.createElementNS(svgns, "text");
+      avgLabel.setAttribute("x", xBase + barWidth + 10 + barWidth/2);
+      avgLabel.setAttribute("y", height - padding - avgBarHeight - 10);
+      avgLabel.setAttribute("text-anchor", "middle");
+      avgLabel.setAttribute("font-size", "10");
+      avgLabel.setAttribute("fill", "#7f8c8d");
+      avgLabel.textContent = "Average";
+      svg.appendChild(avgLabel);
+    });
+
+    return svg;
+  }
+
+  // Final summary with personalized feedback and grades, plus animated characters
+  const finalSummarySection = document.getElementById('final-summary-section');
+  const finalSummaryContent = document.getElementById('final-summary-content');
+  const restartBtn = document.getElementById('restart-btn');
+  const emotionContainer = document.getElementById('emotion-container');
+
+  const improvementTips = {
+    reaction_time: "Practice reaction drills, reduce distractions, and ensure you are rested.",
+    sequence_memory: "Try memory exercises like chunking, repeating sequences aloud, and using mnemonic devices.",
+    typing_speed: "Practice typing regularly, focus on accuracy first, and use typing tutor software.",
+    arithmetic_iq: "Practice mental math daily, use arithmetic apps, and review basic math concepts."
+  };
+  const populationPercentiles = {
+    reaction_time: "better than 85% of people.",
+    sequence_memory: "among the top 15% memory performers.",
+    typing_speed: "in the top 10% of typists.",
+    arithmetic_iq: "better than 80% of test takers."
+  };
+
+  function showFinalResults() {
+    clearAllSectionsExcept('final-summary-section');
+    finalSummaryContent.innerHTML = '';
+    emotionContainer.innerHTML = '';
+
+    // Reaction Time
+    const rAvg = results.reaction_avg || 0;
+    const rGrade = gradeReactionTime(rAvg);
+    appendSummaryBlock(
+      "Reaction Time Test Results:",
+      `Average reaction time: ${formatNumber(rAvg)} ms`,
+      `Grade: <span class="grade-${rGrade}">${rGrade}</span>`,
+      rGrade === "A" ? `Great job! You are ${populationPercentiles.reaction_time}`
+                     : `Suggestion: ${improvementTips.reaction_time}`
+    );
+
+    // Sequence Memory
+    const sAcc = results.seq_avg_accuracy || 0;
+    const sGrade = gradeMemoryRecall(sAcc);
+    appendSummaryBlock(
+      "Sequence Memory Game Results:",
+      `Average accuracy: ${formatNumber(sAcc)}%`,
+      `Grade: <span class="grade-${sGrade}">${sGrade}</span>`,
+      sGrade === "A" ? `Excellent memory! You are ${populationPercentiles.sequence_memory}`
+                     : `Suggestion: ${improvementTips.sequence_memory}`
+    );
+
+    // Typing Speed
+    const tAcc = results.typing_avg_accuracy || 0;
+    const tWpm = results.typing_avg_wpm || 0;
+    const tGrade = gradeTyping(tAcc, tWpm);
+    appendSummaryBlock(
+      "Typing Speed Test Results:",
+      `Average accuracy: ${formatNumber(tAcc)}%`,
+      `Average WPM: ${formatNumber(tWpm)}`,
+      `Grade: <span class="grade-${tGrade}">${tGrade}</span>`,
+      tGrade === "A" ? `Awesome! You are ${populationPercentiles.typing_speed}`
+                     : `Suggestion: ${improvementTips.typing_speed}`
+    );
+
+    // Arithmetic IQ
+    const aScore = results.arithmetic_score || 0;
+    const aTotalTime = results.arithmetic_total_time || 0;
+    const totalQs = 10;
+    const aAvgTime = aTotalTime / totalQs;
+    const aGrade = gradeMath(aScore, aAvgTime, totalQs);
+    appendSummaryBlock(
+      "Arithmetic IQ Test Results:",
+      `Score: ${aScore} out of ${totalQs}`,
+      `Average time per question: ${formatNumber(aAvgTime)} seconds`,
+      `Grade: <span class="grade-${aGrade}">${aGrade}</span>`,
+      aGrade === "A" ? `Fantastic! You are ${populationPercentiles.arithmetic_iq}`
+                     : `Suggestion: ${improvementTips.arithmetic_iq}`
+    );
+
+    // Dementia risk warning if all grades are C
+    const allC = [rGrade, sGrade, tGrade, aGrade].every(g => g === "C");
+    if (allC) {
+      const warning = document.createElement("div");
+      warning.style.fontWeight = "bold";
+      warning.style.color = "#b00000";
+      warning.style.marginTop = "1rem";
+      warning.textContent =
+        "Warning: Scoring C in all cognitive and skill tests might indicate increased risk for cognitive decline, including dementia. Consider consulting a healthcare professional for a comprehensive evaluation.";
+      finalSummaryContent.appendChild(warning);
+    }
+
+    // Animated characters showing emotional feedback per grade
+    function createCharacter(isHappy, emoji, animClass) {
+      const el = document.createElement('div');
+      el.className = animClass;
+      el.setAttribute('aria-hidden', 'true');
+      el.textContent = emoji;
+      return el;
+    }
+    [rGrade, sGrade, tGrade, aGrade].forEach(grade => {
+      if (grade === 'A' || grade === 'B') {
+        const happy = createCharacter(true, '😄', 'happy-character');
+        emotionContainer.appendChild(happy);
+      } else {
+        const sad = createCharacter(false, '😢', 'sad-character');
+        emotionContainer.appendChild(sad);
+      }
+    });
+
+    // Display graphical comparison chart
+    const chart = createComparisonChart(results);
+    emotionContainer.after(chart);
+  }
+
+  function appendSummaryBlock(title, ...lines) {
+    let block = document.createElement('div');
+    block.style.marginBottom = '1.3rem';
+    block.innerHTML = `<b>${title}</b><br>` + lines.map(line => `<div>${line}</div>`).join('');
+    finalSummaryContent.appendChild(block);
+  }
+
+  restartBtn.onclick = () => {
+    results = {};
+    clearAllSectionsExcept('reaction-section');
+    resetReactionTest();
+    sequenceDisplay.textContent = '';
+    sequenceInput.value = '';
+    sequenceInput.classList.add('hidden');
+    sequenceSubmitBtn.classList.add('hidden');
+    sequenceFeedback.textContent = '';
+    typingSentence.textContent = '';
+    typingInput.value = '';
+    typingInput.classList.add('hidden');
+    typingSubmitBtn.classList.add('hidden');
+    typingFeedback.textContent = '';
+    arithmeticQuestionElem.textContent = '';
+    arithmeticInput.value = '';
+    arithmeticInput.classList.add('hidden');
+    arithmeticSubmitBtn.classList.add('hidden');
+    arithmeticFeedback.textContent = '';
+    reactionBox.focus();
+  };
+
+  // Helper to show section, hide others
+  function showNextSection(sectionToShowId) {
+    const allSections = document.querySelectorAll('main > section');
+    allSections.forEach(sec => {
+      if (sec.id === sectionToShowId) {
+        sec.classList.remove('hidden');
+        sec.focus();
+      }
+      else sec.classList.add('hidden');
+    });
+  }
+  // Helper to clear all except one
+  function clearAllSectionsExcept(id) {
+    const allSections = document.querySelectorAll('main > section');
+    allSections.forEach(s => s.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+    document.getElementById(id).focus();
+  }
+
+  // Initialization
+  let results = {};
+  resetReactionTest();
+  showNextSection('reaction-section');
+
+})();
+</script>
+
+</body>
+</html>
