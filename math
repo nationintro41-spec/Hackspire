@@ -1,0 +1,63 @@
+import time
+
+# Define the questions and their answers
+questions = [
+    "12 + 15 + 7",
+    "50 - 12 - 8",
+    "4 * 6 * 3",
+    "144 / 12 / 3",
+    "8 + 14 + 9",
+    "70 - 20 - 15",
+    "5 * 7 * 2",
+    "96 / 4 / 2",
+    "10 + 25 + 5",
+    "60 - 18 - 12"
+]
+
+# Calculate correct answers
+correct_answers = [eval(q) for q in questions]
+
+score = 0
+wrong_answers = []
+
+print("Arithmetic IQ Test")
+print("Answer the following questions:")
+
+# Store times for each question
+times = []
+
+start_total_time = time.time()
+
+for i, question in enumerate(questions):
+    print(f"Question {i + 1}: {question} = ?")
+    start_time = time.time()
+    user_answer = input("Your answer: ")
+    end_time = time.time()
+    time_taken = end_time - start_time
+    times.append(time_taken)
+
+    try:
+        user_answer = float(user_answer)
+        if abs(user_answer - correct_answers[i]) < 0.001:  # Allow slight floating-point tolerance
+            score += 1
+        else:
+            wrong_answers.append((i + 1, question, correct_answers[i], user_answer))
+    except ValueError:
+        wrong_answers.append((i + 1, question, correct_answers[i], user_answer))
+
+end_total_time = time.time()
+total_time = end_total_time - start_total_time
+
+print(f"\nTest Completed! Your score: {score} out of {len(questions)}")
+print("Time taken on each question (seconds):")
+for i, t in enumerate(times):
+    print(f"Question {i + 1}: {t:.2f} seconds")
+
+print(f"\nTotal time taken for the test: {total_time:.2f} seconds")
+
+if wrong_answers:
+    print("\nQuestions answered incorrectly:")
+    for qn, qtext, correct, user_ans in wrong_answers:
+        print(f"Question {qn}: {qtext} = {correct} (You answered: {user_ans})")
+else:
+    print("\nAll questions answered correctly. Well done!")
